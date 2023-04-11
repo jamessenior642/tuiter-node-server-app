@@ -1,17 +1,45 @@
 import posts from "./tuits.js";
 let tuits = posts;
 
+
+export default (app) => {
+    app.post('/api/tuits', createTuit);
+    app.get('/api/tuits', findTuits);
+    app.put('/api/tuits/:tid', updateTuit);
+    app.delete('/api/tuits/:tid', deleteTuit);
+}
+
+const currentUser = {
+    "userName": "NASA",
+    "handle": "@nasa",
+    "image": "nasa-icon.png",
+};
+
+// eslint-disable-next-line no-unused-vars
+const templateTuit = {
+    ...currentUser,
+    "topic": "Space",
+    "time": "2h",
+    "liked": false,
+    "disliked": false,
+    "replies": 0,
+    "retuits": 0,
+    "likes": 0,
+    "dislikes": 0,
+}
+
 const createTuit = (req, res) => {
-    const newTuit = req.body;
+    let newTuit = req.body;
+    newTuit = {...templateTuit, ...newTuit};
     newTuit._id = (new Date()).getTime()+'';
     newTuit.likes = 0;
     newTuit.liked = false;
+    newTuit.dislikes = 0;
+    newTuit.disliked = false;
     tuits.push(newTuit);
     res.json(newTuit);
 }
 
-const findTuits = (req, res) =>
-    res.json(tuits);
 const updateTuit = (req, res) => {
     const tuitdIdToUpdate = req.params.tid;
     const updates = req.body;
@@ -22,6 +50,7 @@ const updateTuit = (req, res) => {
     res.sendStatus(200);
 }
 
+
 const deleteTuit = (req, res) => {
     const tuitdIdToDelete = req.params.tid;
     tuits = tuits.filter((t) =>
@@ -30,9 +59,5 @@ const deleteTuit = (req, res) => {
 }
 
 
-export default (app) => {
-    app.post('/api/tuits', createTuit);
-    app.get('/api/tuits', findTuits);
-    app.put('/api/tuits/:tid', updateTuit);
-    app.delete('/api/tuits/:tid', deleteTuit);
-}
+const findTuits = (req, res) =>
+    res.json(tuits);
