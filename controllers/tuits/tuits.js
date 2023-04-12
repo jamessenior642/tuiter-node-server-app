@@ -33,7 +33,7 @@ const posts = [
     },
     {
         "_id": 345,
-        "topic": "Energy",
+        "topic": "Energy", 
         "userName": "Tesla",
         "title": "Tesla FSD finally makes driving obsolete. After years of delay, Tesla Full Self Driving can drive you to work while you work, play, or sleep",
         "time": "4d",
